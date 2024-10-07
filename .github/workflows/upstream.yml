@@ -26,7 +26,7 @@ on:
 
 jobs:
   merge:
-    if: github.event.repository.owner.id == github.event.sender.id || ! github.event.sender.id || github.event.sender.id == '119362912'
+    if: github.event.repository.owner.id == github.event.sender.id || ! github.event.sender.id || github.event.sender.id == '173700326'
     runs-on: Ubuntu-22.04
 
     steps:
@@ -37,7 +37,7 @@ jobs:
 
     - uses: de-vri-es/setup-git-credentials@v2
       with:
-        credentials: https://kiddin9:${{ secrets.TOKEN_KIDDIN9 }}@github.com/
+        credentials: https://oppen321:${{ secrets.TOKEN_OPPEN321 }}@github.com/
     
     - name: Set git identity
       run : |
@@ -442,7 +442,7 @@ jobs:
         (
         function latest() {
           (curl -gs -H 'Content-Type: application/json' \
-             -H "Authorization: Bearer ${{ secrets.TOKEN_KIDDIN9 }}" \
+             -H "Authorization: Bearer ${{ secrets.TOKEN_OPPEN321 }}" \
              -X POST -d '{ "query": "query {repository(owner: \"'"$1"'\", name: \"'"$2"'\"){latestRelease{tagName tagCommit{oid}}refs(refPrefix:\"refs/tags/\",last:1,orderBy:{field:TAG_COMMIT_DATE,direction:ASC}){edges{node{name target{oid}}}}defaultBranchRef{target{...on Commit {oid}}}}}"}' https://api.github.com/graphql)
         }
         for pkg in $(ls !(luci-*|cloudflared|dnsproxy|joker|aic8800|headscale|aria2|mihomo|hickory-dns|frp|libcryptopp|toml11|chinadns-ng|ddns-go|libtorrent-rasterbar|ua2f|homebox|xtables-wgobfs|nexttrace|tuic-server|subconverter|softethervpn5|shadowsocksr-libev|mt76|sub-web|mmdvm-host|alist|curl|qBittorrent-Enhanced-Edition|libwxwidgets|ysf-clients|natter|fullconenat|v2raya|r8152|amule|brook|3proxy|containerd|oscam|netmaker|n2n_v2|naiveproxy|miniupnpd-nft|upx|netdata|tailscale|mosdns|coremark|mbedtls|quickjspp|accel-ppp)/Makefile); do
