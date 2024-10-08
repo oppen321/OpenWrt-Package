@@ -262,7 +262,13 @@ function searchFiles($dir, $term) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.0/beautify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.0/beautify-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.0/beautify-html.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.0/beautify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js"></script>
+
     <style>
         body { font-family: Arial, sans-serif; max-width: 1500px; margin: 0 auto; padding: 20px; }
         table { width: 100%; border-collapse: collapse; }
@@ -270,8 +276,7 @@ function searchFiles($dir, $term) {
         th { background-color: #f2f2f2; }
         .btn { background-color: #4CAF50; color: white; border: none; padding: 5px 10px; cursor: pointer; margin-right: 5px; }
         .delete-btn { background-color: #f44336; }
-        .folder-icon::before { content: "📁 "; }
-        .file-icon::before { content: "📄 "; }
+        .folder-icon::before{content:"📁";}.file-icon::before{content:"📄";}.file-icon.file-pdf::before{content:"📕";}.file-icon.file-doc::before,.file-icon.file-docx::before{content:"📘";}.file-icon.file-xls::before,.file-icon.file-xlsx::before{content:"📗";}.file-icon.file-ppt::before,.file-icon.file-pptx::before{content:"📙";}.file-icon.file-zip::before,.file-icon.file-rar::before,.file-icon.file-7z::before{content:"🗜️";}.file-icon.file-mp3::before,.file-icon.file-wav::before,.file-icon.file-ogg::before,.file-icon.file-flac::before{content:"🎵";}.file-icon.file-mp4::before,.file-icon.file-avi::before,.file-icon.file-mov::before,.file-icon.file-wmv::before,.file-icon.file-flv::before{content:"🎞️";}.file-icon.file-jpg::before,.file-icon.file-jpeg::before,.file-icon.file-png::before,.file-icon.file-gif::before,.file-icon.file-bmp::before,.file-icon.file-tiff::before{content:"🖼️";}.file-icon.file-txt::before{content:"📝";}.file-icon.file-rtf::before{content:"📄";}.file-icon.file-md::before,.file-icon.file-markdown::before{content:"📑";}.file-icon.file-exe::before,.file-icon.file-msi::before{content:"⚙️";}.file-icon.file-bat::before,.file-icon.file-sh::before,.file-icon.file-command::before{content:"📜";}.file-icon.file-iso::before,.file-icon.file-img::before{content:"💿";}.file-icon.file-sql::before,.file-icon.file-db::before,.file-icon.file-dbf::before{content:"🗃️";}.file-icon.file-font::before,.file-icon.file-ttf::before,.file-icon.file-otf::before,.file-icon.file-woff::before,.file-icon.file-woff2::before{content:"🔤";}.file-icon.file-cfg::before,.file-icon.file-conf::before,.file-icon.file-ini::before{content:"🔧";}.file-icon.file-psd::before,.file-icon.file-ai::before,.file-icon.file-eps::before,.file-icon.file-svg::before{content:"🎨";}.file-icon.file-dll::before,.file-icon.file-so::before{content:"🧩";}.file-icon.file-css::before{content:"🎨";}.file-icon.file-js::before{content:"🟨";}.file-icon.file-php::before{content:"🐘";}.file-icon.file-json::before{content:"📊";}.file-icon.file-html::before,.file-icon.file-htm::before{content:"🌐";}.file-icon.file-bin::before{content:"👾";}
         .breadcrumb { margin-bottom: 20px; }
         .breadcrumb a { text-decoration: none; color: #0066cc; }
         .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
@@ -327,7 +332,7 @@ function searchFiles($dir, $term) {
         @media (max-width: 768px) { .btn-group > * { min-width: 50px; } }
         .btn-chmod { background-color: #FFA500; color: #333; } 
         .btn-chmod:hover { background-color: #FF8C00; color: #fff; }
-        .nav-container { background-color: #f8f9fa; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 10px; margin: 20px 0; }
+
         .nav-row { display: flex; justify-content: space-around; flex-wrap: wrap; }
         .nav-btn { display: flex; align-items: center; justify-content: center; padding: 10px 15px; margin: 5px; border-radius: 8px; text-decoration: none; color: #333; background-color: #fff; transition: all 0.3s ease; font-weight: 500; min-width: 100px; }
         .nav-btn:hover { background-color: #007bff; color: #fff; transform: translateY(-2px); }
@@ -375,7 +380,75 @@ function searchFiles($dir, $term) {
         .btn-outline-secondary, #languageSwitcher { width: 38px; height: 38px; padding: 0; font-size: 1rem; line-height: 1; border-radius: 0.25rem; display: flex; align-items: center; justify-content: center; }
         #languageSwitcher { width: auto; padding: 0 0.5rem; }
         @media (max-width: 768px) { .button-group { justify-content: center; } }
-</style>
+        body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;color:var(--text-color);line-height:1.6;}
+        :root {--primary-color: #3498db;--secondary-color: #2ecc71;--text-color: #34495e;--border-color: #e0e6ed;}
+        table {width: 100%;border-collapse: separate;border-spacing: 0;background: #fff;border-radius: 10px;overflow: hidden;box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
+        th {background-color: var(--primary-color);color: white;font-weight: 600;text-transform: uppercase;letter-spacing: 0.5px;}
+        tr:last-child td {border-bottom: none;}
+        tr:hover {background-color: #f8f9fa;}
+        .modal-content {background-color: #fff;border-radius: 10px;padding: 30px;box-shadow: 0 10px 30px rgba(0,0,0,0.2);}
+        .modal h2 {margin-bottom: 20px;color: var(--primary-color);}
+        .form-group {margin-bottom: 20px;}
+        .form-group label {display: block;margin-bottom: 5px;font-weight: 600;}
+        .form-group input[type="text"] {width: 100%;padding: 10px;border: 1px solid var(--border-color);border-radius: 5px;font-size: 16px;}
+        @media (max-width: 768px) {table {font-size: 14px;} .btn {padding: 6px 12px;font-size: 12px;} .nav-btn {padding: 8px 16px;font-size: 14px;}}
+        @keyframes fadeIn {from { opacity: 0; }to { opacity: 1; }}
+        .modal {animation: fadeIn 0.3s ease;}
+        .btn, .nav-btn {transition: all 0.3s ease;}
+        .btn:hover, .nav-btn:hover {transform: translateY(-2px);box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
+        .modal {display: none;position: fixed;z-index: 1000;left: 0;top: 0;width: 100%;height: 100%;overflow: auto;background-color: rgba(0,0,0,0.4);backdrop-filter: blur(5px);}
+        .modal.show .modal-content {transform: translateY(0);opacity: 1;}
+        .close {color: #aaa;float: right;font-size: 28px;font-weight: bold;transition: color 0.3s ease;}
+        .close:hover,.close:focus {color: #000;text-decoration: none;cursor: pointer;}
+        .modal h2 {margin-top: 0;color: #333;font-size: 24px;font-weight: 600;margin-bottom: 20px;padding-bottom: 10px;border-bottom: 2px solid #f0f0f0;}
+        .modal form {margin-top: 20px;}
+        .modal .form-group {margin-bottom: 20px;}
+        .modal label {display: block;margin-bottom: 5px;font-weight: 500;color: #555;}
+        .modal input[type="text"],.modal input[type="password"],.modal textarea {width: 100%;padding: 10px;border: 1px solid #ddd;border-radius: 5px;font-size: 16px;transition: border-color 0.3s ease;}
+        .modal input[type="text"]:focus,.modal input[type="password"]:focus,.modal textarea:focus {border-color: #3498db;outline: none;box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);}
+        .modal .btn {padding: 10px 20px;font-size: 16px;border: none;border-radius: 5px;cursor: pointer;transition: all 0.3s ease;}
+        .modal .btn-primary {background-color: #3498db;color: white;}
+        .modal .btn-primary:hover {background-color: #2980b9;}
+        .modal .btn-secondary {background-color: #95a5a6;color: white;}
+        .modal .btn-secondary:hover {background-color: #7f8c8d;}
+        body.dark-mode td.folder-icon a {color: #2ecc71;transition: color 0.3s ease;}
+        body.dark-mode td.folder-icon a:hover {color: #27ae60;text-decoration: underline;}
+        body.dark-mode .modal-content {background-color: #2c3e50;color: #ecf0f1;}
+        body.dark-mode .modal h2 {color: #3498db;border-bottom-color: #34495e;}
+        body.dark-mode .close {color: #bdc3c7;}
+        body.dark-mode .close:hover,body.dark-mode .close:focus {color: #ecf0f1;}
+        body.dark-mode .modal label {color: #ecf0f1;}
+        body.dark-mode .modal input[type="text"],body.dark-mode .modal input[type="password"],body.dark-mode .modal textarea {background-color: #34495e;border-color: #2c3e50;color: #ecf0f1;}
+        body.dark-mode .modal input[type="text"]:focus,body.dark-mode .modal input[type="password"]:focus,body.dark-mode .modal textarea:focus {border-color: #3498db;box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);}
+        body.dark-mode #renameModal .modal-content,body.dark-mode #chmodModal .modal-content {color: #ecf0f1;}
+        body.dark-mode #renameModal label,body.dark-mode #chmodModal label {color: #ecf0f1;}
+        body.dark-mode #renameModal input[type="text"],body.dark-mode #chmodModal input[type="text"] {color: #ecf0f1;background-color: #34495e;border-color: #3498db;}
+        body.dark-mode #renameModal .btn,body.dark-mode #chmodModal .btn {color: #ecf0f1;}
+        body.dark-mode #renameModal .btn-primary,body.dark-mode #chmodModal .btn-primary {background-color: #3498db;}
+        body.dark-mode #renameModal .btn-secondary,body.dark-mode #chmodModal .btn-secondary {background-color: #95a5a6;}
+        body.dark-mode .modal-content {background-color: #2c3e50;color: #ecf0f1;}
+        body.dark-mode .modal h2 {color: #ecf0f1;border-bottom-color: #34495e;}
+        body.dark-mode .close {color: #bdc3c7;}
+        body.dark-mode .close:hover,body.dark-mode .close:focus {color: #ecf0f1;}
+        body.dark-mode .modal label {color: #ecf0f1;}
+        body.dark-mode .modal input[type="text"],body.dark-mode .modal input[type="password"],body.dark-mode .modal textarea {background-color: #34495e;border-color: #2c3e50;color: #ecf0f1;}
+        body.dark-mode .modal input[type="text"]:focus,body.dark-mode .modal input[type="password"]:focus,body.dark-mode .modal textarea:focus {border-color: #3498db;box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);}
+        body.dark-mode #renameModal .modal-content,body.dark-mode #chmodModal .modal-content,body.dark-mode #editModal .modal-content,body.dark-mode #newFolderModal .modal-content,body.dark-mode #newFileModal .modal-content,body.dark-mode #searchModal .modal-content,body.dark-mode #previewModal .modal-content {color: #ecf0f1;}
+        body.dark-mode #renameModal h2,body.dark-mode #chmodModal h2,body.dark-mode #editModal h2,body.dark-mode #newFolderModal h2,body.dark-mode #newFileModal h2,body.dark-mode #searchModal h2,body.dark-mode #previewModal h2 {color: #ecf0f1;}
+        #editModal .modal-content,#previewModal .modal-content {width: 80%;max-width: 1000px;}
+        #searchModal .modal-dialog,#searchModal .modal-content {max-width: 90% !important;width: 800px !important;}
+        body.dark-mode td.folder-icon a,body.dark-mode td.file-icon a {text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);}
+        body.dark-mode .nav-container {background-color: transparent;box-shadow: none;}
+        body.dark-mode .nav-btn {color: #ecf0f1;background-color: rgba(52, 73, 94, 0.6);transition: all 0.3s ease;}
+        body.dark-mode .nav-btn:hover {background-color: rgba(52, 73, 94, 0.8);color: #3498db;transform: translateY(-2px);}
+        body.dark-mode .nav-btn span {color: #3498db;}
+        body.dark-mode .breadcrumb {background-color: transparent;color: #ecf0f1;}
+        body.dark-mode .breadcrumb a {color: #3498db;transition: color 0.3s ease;}
+        body.dark-mode .breadcrumb a:hover {color: #2980b9;text-decoration: underline;}
+        .nav-container,.container-bg{background:none!important;background-color:transparent!important;box-shadow:none!important;border:none!important;}
+        .modal-content {background-color: #fff;margin: 5% auto;padding: 30px;border: none;width: 50%;max-width: 600px;box-shadow: 0 10px 30px rgba(0,0,0,0.2);border-radius: 15px;}
+
+  </style>
        <div class="container container-bg border border-3 rounded-4 col-12 mb-4">
     <div class="nav-row">
         <a href="./index.php" class="nav-btn"><span>🏠</span>首页</a>
@@ -470,9 +543,16 @@ function searchFiles($dir, $term) {
     <td></td>
     </tr>
     <?php endif; ?>
-    <?php foreach ($contents as $item): ?>
-    <tr>
-<td class="<?php echo $item['is_dir'] ? 'folder-icon' : 'file-icon'; ?>">
+<?php foreach ($contents as $item): ?>
+<tr>
+    <?php
+    $icon_class = $item['is_dir'] ? 'folder-icon' : 'file-icon';
+    if (!$item['is_dir']) {
+        $ext = strtolower(pathinfo($item['name'], PATHINFO_EXTENSION));
+        $icon_class .= ' file-' . $ext;
+    }
+    ?>
+    <td class="<?php echo $icon_class; ?>">
     <?php if ($item['is_dir']): ?>
         <a href="?dir=<?php echo urlencode($current_dir . $item['path']); ?>"><?php echo htmlspecialchars($item['name']); ?></a>
     <?php else: ?>
@@ -481,12 +561,12 @@ function searchFiles($dir, $term) {
         if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'mp3', 'mp4'])): 
             $clean_path = ltrim(str_replace('//', '/', $item['path']), '/');
         ?>
-            <a href="#" onclick="previewFile('<?php echo htmlspecialchars($clean_path); ?>', '<?php echo $ext; ?>')"><?php echo htmlspecialchars($item['name']); ?></a>
-        <?php else: ?>
-            <?php echo htmlspecialchars($item['name']); ?>
+                <a href="#" onclick="previewFile('<?php echo htmlspecialchars($clean_path); ?>', '<?php echo $ext; ?>')"><?php echo htmlspecialchars($item['name']); ?></a>
+            <?php else: ?>
+                <a href="#" onclick="showEditModal('<?php echo htmlspecialchars(addslashes($item['path'])); ?>')"><?php echo htmlspecialchars($item['name']); ?></a>
+            <?php endif; ?>
         <?php endif; ?>
-    <?php endif; ?>
-</td>
+    </td>
         <td data-translate="<?php echo $item['is_dir'] ? 'directory' : 'file'; ?>"><?php echo $item['is_dir'] ? '目录' : '文件'; ?></td>
         <td><?php echo $item['size']; ?></td>
         <td><?php echo $item['mtime']; ?></td>
@@ -496,7 +576,7 @@ function searchFiles($dir, $term) {
             <div style="display: flex; gap: 5px;">
                 <button onclick="showRenameModal('<?php echo htmlspecialchars($item['name']); ?>', '<?php echo htmlspecialchars($item['path']); ?>')" class="btn btn-rename" data-translate="rename">重命名</button>
                 <?php if (!$item['is_dir']): ?>
-                    <button onclick="showEditModal('<?php echo htmlspecialchars($item['path']); ?>')" class="btn btn-edit" data-translate="edit">编辑</button>
+                <!--<button onclick="showEditModal('<?php echo htmlspecialchars($item['path']); ?>')" class="btn btn-edit" data-translate="edit">编辑</button>-->
                     <a href="?dir=<?php echo urlencode($current_dir); ?>&download=<?php echo urlencode($item['path']); ?>" class="btn btn-download" data-translate="download">下载</a>
                 <?php endif; ?>
                 <button onclick="showChmodModal('<?php echo htmlspecialchars($item['path']); ?>', '<?php echo $item['permissions']; ?>')" class="btn btn-chmod" data-translate="setPermissions">权限</button>
@@ -565,15 +645,15 @@ function searchFiles($dir, $term) {
     </div>
 </div>
 
-<div id="searchModal" class="modal fade" tabindex="-1">
-    <div class="modal-dialog">
+<div id="searchModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">搜索文件</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form onsubmit="return searchFiles()">
+                <form id="searchForm">
                     <div class="input-group mb-3">
                         <input type="text" id="searchInput" class="form-control" placeholder="输入文件名" required>
                         <button type="submit" class="btn btn-primary">搜索</button>
@@ -600,8 +680,12 @@ function searchFiles($dir, $term) {
     </div>
 </div>
 
-<div id="aceEditor">
+<div id="aceEditor" style="display: none;">
     <div id="aceEditorContainer"></div>
+    <div id="editorStatusBar">
+        <span id="cursorPosition">行: 1, 列: 1</span>
+        <span id="characterCount">字符数: 0</span>
+    </div>
     <div style="position: absolute; top: 10px; right: 10px;">
         <select id="fontSize" onchange="changeFontSize()">
             <option value="18px">18px</option>
@@ -626,6 +710,9 @@ function searchFiles($dir, $term) {
             <option value="Shift_JIS">Shift_JIS (日文)</option>
             <option value="EUC-KR">EUC-KR (韩文)</option>
         </select>
+        <button onclick="formatCode()" class="btn">格式化</button>
+        <button onclick="validateJSON()" class="btn" id="validateJSONBtn" style="display: none;">验证 JSON</button>
+        <button onclick="validateYAML()" class="btn" id="validateYAMLBtn" style="display: none;">验证 YAML</button>
         <button onclick="saveAceContent()" class="btn">保存</button>
         <button onclick="closeAceEditor()" class="btn">关闭</button>
     </div>
@@ -731,10 +818,15 @@ function createNewFile() {
 }
 
 function showSearchModal() {
-    new bootstrap.Modal(document.getElementById('searchModal')).show();
+    const searchModal = new bootstrap.Modal(document.getElementById('searchModal'), {
+        backdrop: 'static',
+        keyboard: false
+    });
+    searchModal.show();
 }
 
-function searchFiles() {
+function searchFiles(event) {
+    event.preventDefault();
     const searchTerm = document.getElementById('searchInput').value;
     const currentDir = '<?php echo $current_dir; ?>';
 
@@ -753,7 +845,7 @@ function searchFiles() {
                     const li = document.createElement('li');
                     li.className = 'list-group-item d-flex justify-content-between align-items-center';
                     const fileSpan = document.createElement('span');
-                    fileSpan.textContent = file.path;
+                    fileSpan.textContent = `${file.name} (${file.path})`;
                     li.appendChild(fileSpan);
 
                     const moveButton = document.createElement('button');
@@ -762,6 +854,7 @@ function searchFiles() {
                     moveButton.onclick = function() {
                         const targetDir = file.dir === '' ? '/' : file.dir;
                         window.location.href = `?dir=${encodeURIComponent(targetDir)}`;
+                        bootstrap.Modal.getInstance(document.getElementById('searchModal')).hide();
                     };
                     li.appendChild(moveButton);
 
@@ -774,8 +867,6 @@ function searchFiles() {
             console.error('搜索出错:', error);
             alert('搜索时出错: ' + error.message);
         });
-
-    return false;
 }
 
 fileSpan.textContent = `${file.name} (${file.path})`;
@@ -875,16 +966,6 @@ function formatCode() {
     beautify.beautify(session);
 }
 
-function openAceEditor() {
-    closeModal('editModal');
-    document.getElementById('aceEditor').style.display = 'block';
-    let content = document.getElementById('editContent').value;
-    aceEditor.setValue(content, -1);
-    aceEditor.resize();
-    aceEditor.setFontSize(DEFAULT_FONT_SIZE);
-    document.getElementById('fontSize').value = DEFAULT_FONT_SIZE;
-    aceEditor.focus();
-}
 
 function showChmodModal(path, currentPermissions) {
     document.getElementById('chmodPath').value = path;
@@ -925,6 +1006,7 @@ document.getElementById('permissions').addEventListener('input', function(e) {
 function getAceMode(extension) {
     const modeMap = {
         'js': 'javascript',
+        'json': 'json',
         'py': 'python',
         'php': 'php',
         'html': 'html',
@@ -1009,6 +1091,107 @@ function saveAceContent() {
     document.getElementById('editModal').querySelector('form').submit();
 }
 
+function openAceEditor() {
+    closeModal('editModal');
+    document.getElementById('aceEditor').style.display = 'block';
+    let content = document.getElementById('editContent').value;
+
+    let fileExtension = document.getElementById('editPath').value.split('.').pop().toLowerCase();
+    let mode = getAceMode(fileExtension);
+    let session = aceEditor.getSession();
+    session.setMode("ace/mode/" + mode);
+
+    aceEditor.setOptions({
+        enableBasicAutocompletion: true,
+        enableLiveAutocompletion: true,
+        enableSnippets: true
+    });
+
+    document.getElementById('validateJSONBtn').style.display = (mode === 'json') ? 'inline-block' : 'none';
+    document.getElementById('validateYAMLBtn').style.display = (mode === 'yaml') ? 'inline-block' : 'none';
+
+    if (mode === 'yaml') {
+        session.setTabSize(2);
+        session.setUseSoftTabs(true);
+    }
+
+    if (mode === 'json' || mode === 'yaml') {
+        session.setOption("useWorker", false);
+        if (session.$customWorker) {
+            session.$customWorker.terminate();
+        }
+        session.$customWorker = createCustomWorker(session, mode);
+        session.on("change", function() {
+            session.$customWorker.postMessage({
+                content: session.getValue(),
+                mode: mode
+            });
+        });
+        
+        setupCustomIndent(session, mode);
+    }
+    setupCustomCompletion(session, mode);
+    
+    if (!aceEditor) {
+        aceEditor = ace.edit("aceEditorContainer");
+        aceEditor.setTheme("ace/theme/monokai");
+        
+        aceEditor.getSession().selection.on('changeCursor', updateCursorPosition);
+        aceEditor.getSession().on('change', updateCharacterCount);
+    }
+    
+    aceEditor.setValue(content, -1);
+    aceEditor.resize();
+    aceEditor.setFontSize(DEFAULT_FONT_SIZE);
+    document.getElementById('fontSize').value = DEFAULT_FONT_SIZE;
+    aceEditor.focus();
+    
+    updateCursorPosition();
+    updateCharacterCount();
+    
+    if (!document.getElementById('editorStatusBar')) {
+        const statusBar = document.createElement('div');
+        statusBar.id = 'editorStatusBar';
+        statusBar.innerHTML = `
+            <span id="cursorPosition">行: 1, 列: 1</span>
+            <span id="characterCount">字符数: 0</span>
+        `;
+        document.getElementById('aceEditor').appendChild(statusBar);
+    }
+}
+
+function updateCursorPosition() {
+    var cursorPosition = aceEditor.getCursorPosition();
+    document.getElementById('cursorPosition').textContent = '行: ' + (cursorPosition.row + 1) + ', 列: ' + (cursorPosition.column + 1);
+}
+
+function updateCharacterCount() {
+    var characterCount = aceEditor.getValue().length;
+    document.getElementById('characterCount').textContent = '字符数: ' + characterCount;
+}
+
+function validateJSON() {
+    const editor = aceEditor;
+    const content = editor.getValue();
+    try {
+        JSON.parse(content);
+        alert('JSON 格式有效');
+    } catch (e) {
+        alert('无效的 JSON 格式: ' + e.message);
+    }
+}
+
+function addErrorMarker(session, line, message) {
+    var Range = ace.require("ace/range").Range;
+    var marker = session.addMarker(new Range(line, 0, line, 1), "ace_error-marker", "fullLine");
+    session.setAnnotations([{
+        row: line,
+        type: "error",
+        text: message
+    }]);
+    return marker;
+}
+
 function closeAceEditor() {
     if (confirm('确定要关闭编辑器吗？请确保已保存更改。')) {
         document.getElementById('editContent').value = aceEditor.getValue();
@@ -1069,6 +1252,72 @@ body.dark-mode .upload-drop-zone { background: #2d3238; border-color: #495057; }
 body.dark-mode .upload-drop-zone.drag-over { background: #343a40; border-color: #0d6efd; }
 body.dark-mode .upload-icon { color: #adb5bd; }
 body.dark-mode .upload-drop-zone:hover .upload-icon { color: #0d6efd; }
+</style>
+
+<style>
+    #searchModal {
+        z-index: 1060 !important;
+    }
+    .modal-backdrop {
+        z-index: 1050 !important;
+    }
+    .modal-content {
+        background-color: var(--bs-body-bg);
+        color: var(--bs-body-color);
+    }
+    #searchModal .modal-dialog {
+        max-width: 90% !important;
+        width: 800px !important;
+    }
+    #searchResults {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    #searchResults .list-group-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    #searchResults .list-group-item span {
+        word-break: break-all;
+        margin-right: 10px;
+    }
+</style>
+
+
+<style>
+    #aceEditor {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+    }
+    #aceEditorContainer {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 30px;
+        left: 0;
+    }
+    #editorStatusBar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 30px;
+        background-color: #f0f0f0;
+        padding: 5px 10px;
+        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    body.dark-mode #editorStatusBar {
+        background-color: #2d3238;
+        color: #e0e0e0;
+    }
 </style>
 
 <script>
@@ -1312,6 +1561,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         dropZone.addEventListener(eventName, preventDefaults, false);
         document.body.addEventListener(eventName, preventDefaults, false);
+        document.getElementById('searchForm').addEventListener('submit', searchFiles);
     });
 
     function preventDefaults(e) {
@@ -1467,6 +1717,283 @@ function previewFile(path, extension) {
     }
     
     showModal('previewModal');
+}
+
+function setupCustomIndent(session, mode) {
+    session.setTabSize(2);
+    session.setUseSoftTabs(true);
+    session.on("change", function(delta) {
+        if (delta.action === "insert" && delta.lines.length === 1 && delta.lines[0] === "") {
+            var cursor = session.selection.getCursor();
+            var line = session.getLine(cursor.row - 1);
+            var indent = line.match(/^\s*/)[0];
+
+            if (mode === 'yaml') {
+                if (line.trim().endsWith(':')) {
+                    indent += "  ";
+                } else if (line.trim().startsWith('- ')) {
+                    indent = line.match(/^\s*/)[0];
+                }
+            } else if (mode === 'json') {
+                if (line.trim().endsWith('{') || line.trim().endsWith('[')) {
+                    indent += "  ";
+                }
+            }
+
+            session.insert({row: cursor.row, column: 0}, indent);
+        }
+    });
+}
+
+function setupCustomCompletion(session, mode) {
+    var langTools = ace.require("ace/ext/language_tools");
+    var customCompleter = {
+        getCompletions: function(editor, session, pos, prefix, callback) {
+            var line = session.getLine(pos.row);
+            var completions = [];
+
+            if (mode === 'json') {
+                if (line.trim().length === 0 || line.trim().endsWith(',')) {
+                    completions = [
+                        {caption: "\"\":", snippet: "\"${1:key}\": ${2:value}", meta: "key-value pair"},
+                        {caption: "{}", snippet: "{\n  $0\n}", meta: "object"},
+                        {caption: "[]", snippet: "[\n  $0\n]", meta: "array"}
+                    ];
+                }
+            } else if (mode === 'yaml') {
+                if (line.trim().length === 0) {
+                    completions = [
+                        {caption: "key:", snippet: "${1:key}: ${2:value}", meta: "key-value pair"},
+                        {caption: "- ", snippet: "- ${1:item}", meta: "list item"},
+                        {caption: "---", snippet: "---\n$0", meta: "document start"}
+                    ];
+                }
+            }
+
+            callback(null, completions);
+        }
+    };
+
+    langTools.addCompleter(customCompleter);
+}
+
+function createJsonWorker(session) {
+    var worker = new Worker(URL.createObjectURL(new Blob([`
+        self.onmessage = function(e) {
+            var value = e.data;
+            try {
+                JSON.parse(value);
+                self.postMessage({
+                    isValid: true
+                });
+            } catch (e) {
+                var match = e.message.match(/at position (\\d+)/);
+                var pos = match ? parseInt(match[1], 10) : 0;
+                var lines = value.split(/\\n/);
+                var total = 0;
+                var line = 0;
+                var ch;
+                for (var i = 0; i < lines.length; i++) {
+                    total += lines[i].length + 1;
+                    if (total > pos) {
+                        line = i;
+                        ch = pos - (total - lines[i].length - 1);
+                        break;
+                    }
+                }
+                self.postMessage({
+                    isValid: false,
+                    line: line,
+                    ch: ch,
+                    message: e.message
+                });
+            }
+        };
+    `], { type: "text/javascript" })));
+
+    worker.onmessage = function(e) {
+        session.clearAnnotations();
+        if (session.$errorMarker) {
+            session.removeMarker(session.$errorMarker);
+        }
+        if (!e.data.isValid) {
+            session.$errorMarker = addErrorMarker(session, e.data.line, e.data.message);
+        }
+    };
+
+    return worker;
+}
+
+function addErrorMarker(session, line, message) {
+    var Range = ace.require("ace/range").Range;
+    var marker = session.addMarker(new Range(line, 0, line, 1), "ace_error-marker", "fullLine");
+    session.setAnnotations([{
+        row: line,
+        column: 0,
+        text: message,
+        type: "error"
+    }]);
+    return marker;
+}
+
+function addErrorMarker(session, line, message) {
+    var Range = ace.require("ace/range").Range;
+    var marker = session.addMarker(new Range(line, 0, line, 1), "ace_error-marker", "fullLine");
+    session.setAnnotations([{
+        row: line,
+        column: 0,
+        text: message,
+        type: "error"
+    }]);
+    return marker;
+}
+
+function createCustomWorker(session, mode) {
+    var worker = new Worker(URL.createObjectURL(new Blob([`
+        importScripts('https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js');
+        self.onmessage = function(e) {
+            var content = e.data.content;
+            var mode = e.data.mode;
+            try {
+                if (mode === 'json') {
+                    JSON.parse(content);
+                } else if (mode === 'yaml') {
+                    jsyaml.load(content);
+                }
+                self.postMessage({
+                    isValid: true
+                });
+            } catch (e) {
+                var line = 0;
+                var column = 0;
+                var message = e.message;
+
+                if (mode === 'json') {
+                    var match = e.message.match(/at position (\\d+)/);
+                    if (match) {
+                        var position = parseInt(match[1], 10);
+                        var lines = content.split('\\n');
+                        var currentLength = 0;
+                        for (var i = 0; i < lines.length; i++) {
+                            currentLength += lines[i].length + 1; // +1 for newline
+                            if (currentLength >= position) {
+                                line = i;
+                                column = position - (currentLength - lines[i].length - 1);
+                                break;
+                            }
+                        }
+                    }
+                } else if (mode === 'yaml') {
+                    if (e.mark) {
+                        line = e.mark.line;
+                        column = e.mark.column;
+                    }
+                }
+
+                self.postMessage({
+                    isValid: false,
+                    line: line,
+                    column: column,
+                    message: message
+                });
+            }
+        };
+    `], { type: "text/javascript" })));
+
+    worker.onmessage = function(e) {
+        session.clearAnnotations();
+        if (session.$errorMarker) {
+            session.removeMarker(session.$errorMarker);
+        }
+        if (!e.data.isValid) {
+            session.$errorMarker = addErrorMarker(session, e.data.line, e.data.column, e.data.message);
+        }
+    };
+
+    return worker;
+}
+
+function formatCode() {
+    const editor = aceEditor;
+    const session = editor.getSession();
+    const cursorPosition = editor.getCursorPosition();
+    
+    let content = editor.getValue();
+    let formatted;
+    
+    const mode = session.getMode().$id;
+    
+    try {
+        if (mode.includes('javascript')) {
+            formatted = js_beautify(content, {
+                indent_size: 2,
+                space_in_empty_paren: true
+            });
+        } else if (mode.includes('json')) {
+            JSON.parse(content); 
+            formatted = JSON.stringify(JSON.parse(content), null, 2);
+        } else if (mode.includes('yaml')) {
+            const obj = jsyaml.load(content); 
+            formatted = jsyaml.dump(obj, {
+                indent: 2,
+                lineWidth: -1,
+                noRefs: true,
+                sortKeys: false
+            });
+        } else {
+            formatted = js_beautify(content, {
+                indent_size: 2,
+                space_in_empty_paren: true
+            });
+        }
+
+        editor.setValue(formatted);
+        editor.clearSelection();
+        editor.moveCursorToPosition(cursorPosition);
+        editor.focus();
+
+        session.clearAnnotations();
+        if (session.$errorMarker) {
+            session.removeMarker(session.$errorMarker);
+        }
+
+        showNotification('代码已成功格式化', 'success');
+
+    } catch (e) {
+        let errorMessage;
+        if (mode.includes('json')) {
+            errorMessage = '无法格式化：无效的 JSON 格式';
+        } else if (mode.includes('yaml')) {
+            errorMessage = '无法格式化：无效的 YAML 格式';
+        } else {
+            errorMessage = '格式化时发生错误：' + e.message;
+        }
+        showNotification(errorMessage, 'error');
+
+        if (e.mark) {
+            session.$errorMarker = addErrorMarker(session, e.mark.line, e.message);
+        }
+    }
+}
+
+function addErrorMarker(session, line, column, message) {
+    var Range = ace.require("ace/range").Range;
+    var marker = session.addMarker(new Range(line, 0, line, 1), "ace_error-marker", "fullLine");
+    session.setAnnotations([{
+        row: line,
+        column: column,
+        text: message,
+        type: "error"
+    }]);
+    return marker;
+}
+
+function showNotification(message, type) {
+    if (type === 'error') {
+        alert('错误: ' + message);
+    } else {
+        alert(message);
+    }
 }
 </script>
 </body>
