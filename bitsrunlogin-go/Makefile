@@ -5,7 +5,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=BitSrunLoginGo
-PKG_VERSION:=1.6.1
+PKG_VERSION:=1.6.2
 PKG_RELEASE:=
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
