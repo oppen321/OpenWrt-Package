@@ -4,7 +4,6 @@ function index()
     entry({"admin","services","neko"}, template("neko"), _("NekoBox"), 1).leaf=true
     entry({"admin", "services", "neko", "mon"}, template("neko_mon"), nil, 2).leaf = true
     entry({"admin", "services", "neko", "logs"}, call("render_logs"), nil, 3).leaf = true
-    
     entry({"admin", "services", "neko", "fetch_plugin_log"}, call("fetch_plugin_log")).leaf = true
     entry({"admin", "services", "neko", "fetch_mihomo_log"}, call("fetch_mihomo_log")).leaf = true
     entry({"admin", "services", "neko", "fetch_singbox_log"}, call("fetch_singbox_log")).leaf = true
