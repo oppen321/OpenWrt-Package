@@ -29,13 +29,14 @@ define Package/$(PKG_NAME)
   CATEGORY:=Network
   TITLE:=tun to socks proxy redirector written on golang
   URL:=https://github.com/xjasonlyu/tun2socks
-  DEPENDS:=$(GO_ARCH_DEPENDS) +ca-bundle
+  DEPENDS:=$(GO_ARCH_DEPENDS) +ca-bundle +kmod-tun +ip-full
 endef
 
 define Package/$(PKG_NAME)/install
 	$(call GoPackage/Package/Install/Bin,$(PKG_INSTALL_DIR))
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/$(PKG_NAME) $(1)/usr/sbin/
+	$(CP) ./root/* $(1)/
 endef
 
 $(eval $(call GoBinPackage,$(PKG_NAME)))
