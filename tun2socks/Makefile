@@ -29,7 +29,8 @@ define Package/$(PKG_NAME)
   CATEGORY:=Network
   TITLE:=tun to socks proxy redirector written on golang
   URL:=https://github.com/xjasonlyu/tun2socks
-  DEPENDS:=$(GO_ARCH_DEPENDS) +ca-bundle +kmod-tun +ip-full
+  DEPENDS:=$(GO_ARCH_DEPENDS) +ca-bundle \
+	   +kmod-tun +ip-full +coreutils-base64
 endef
 
 define Package/$(PKG_NAME)/install
