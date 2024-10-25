@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shadowsocks-rust
-PKG_VERSION:=1.21.0
+PKG_VERSION:=1.21.2
 PKG_RELEASE:=
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
